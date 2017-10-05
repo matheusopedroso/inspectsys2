@@ -7,17 +7,22 @@ import { HomePage } from '../pages/home/home';
 import { EquipamentosPage } from '../pages/equipamentos/equipamentos';
 import { TabelasPage } from '../pages/tabelas/tabelas';
 
+import { AngularFireAuth } from 'angularfire2/auth';
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+	public platform: Platform, public statusBar: StatusBar,
+	public splashScreen: SplashScreen,
+	afAuth: AngularFireAuth,) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -43,4 +48,15 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
+
+	const authObserver = afAuth.authState.subscribe( user => {
+	  if (user) {
+		this.rootPage = HomePage;
+		authObserver.unsubscribe();
+	  } else {
+		this.rootPage = LoginPage;
+		authObserver.unsubscribe();
+	  }
+	});  
+  
 }

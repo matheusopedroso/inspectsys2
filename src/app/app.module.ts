@@ -12,6 +12,20 @@ import { ItemDetailPage } from '../pages/item-detail/item-detail';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { AuthProvider } from '../providers/auth/auth';
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
+// AF2 Settings
+const firebaseConfig = {
+    apiKey: "AIzaSyChpSaVNW0BDIiypXm7-7RLEpwGvbKrXtc",
+    authDomain: "inspectsys.firebaseapp.com",
+    databaseURL: "https://inspectsys.firebaseio.com",
+    projectId: "inspectsys",
+    storageBucket: "inspectsys.appspot.com",
+    messagingSenderId: "955405615446"
+};
 
 @NgModule({
   declarations: [
@@ -25,7 +39,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-	IonicStorageModule.forRoot()
+	IonicStorageModule.forRoot(),
+	AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule
 
   ],
   bootstrap: [IonicApp],
@@ -40,7 +56,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+	AuthProvider,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthProvider
     
   ]
 })
